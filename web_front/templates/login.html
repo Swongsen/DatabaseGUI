@@ -1,0 +1,35 @@
+<html>
+  <head>
+    <link rel="stylesheet" type="text/css" href="assets/css/main.css">
+    <title>Database GUI</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="static/bootstrap.min.css" rel="stylesheet" media="screen">
+  </head>
+  <body>
+    <div class="container">
+      <h1 align=left>Assignment 5 GUI</h1>
+      <h1 align=left>CIS4301</h1>
+      <center>
+      <h1>Login</hl>
+      <br><br>
+      <form action="" method="POST">
+        <input type="text" placeholder="Username" name="username" value="{{
+          request.form.username }}">
+          <br>
+         <input type="password" placeholder="Password" name="password" value="{{
+          request.form.password }}">
+          <br>
+        <input class="btn btn-default" type="submit" value="Login">
+      </form>
+      {% if message %}
+        <p class="message"><strong>Message:</strong> {{ message }}
+      {% endif %}
+      <br>
+      <h1> Don't Have An Account? </h1>
+      <a href='/createuser'>
+        <input type="button" value="Create Account">
+        </a>
+      </center>
+    </div>
+  </body>
+</html

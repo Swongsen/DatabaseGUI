@@ -1,0 +1,29 @@
+<html>
+<head>
+  <link rel="stylesheet" type="text/css" href="assets/css/main.css">
+</head>
+<center>
+  <body bgcolor = "#727070">
+  <h1> Create User </h1>
+  <form action="" method="POST">
+    <input type="text" placeholder="Create Username" name="username" id="username" value="{{
+      request.form.username }}">
+      <br>
+      <input type="password" placeholder="Create Password" name="password" id="password" value="{{
+        request.form.password }}">
+        <br><br>
+        <input class="btn btn-default" type="submit" id="submit" value="Create Account">
+        <br>
+        <font color="Red">
+          {% if message %}
+            <p class="message" id="message"><strong>Message:</strong> {{ message }}
+          {% endif %}
+        </font>
+  </form>
+  <br>
+  <a href='/login'>
+    <input type="button" value="Back">
+  </a>
+  </body>
+</center>
+</html>

@@ -1,0 +1,35 @@
+<html>
+  <head>
+    <link rel="stylesheet" type="text/css" href="assets/css/main.css">
+  </head>
+  <body bgcolor = "#FFE5DF">
+
+    <center>
+      <h1> Welcome to the GUI </h1>
+    </center>
+
+    <center>
+      <a href='/login'>
+        <input type="button" value="Sign Out">
+      </a>
+    </center>
+
+    <center>
+      <table style="width:50%">
+      {% for item in items %}
+          <tr>
+              <td>
+                <center>
+                  <a href='/flowerinfo'>
+                    <input type="button" value="{{item[0]}}">
+                  </a>
+              </center>
+              </td>
+
+          </tr>
+
+
+      {% endfor %}
+    </center>
+  </body>
+</html>

@@ -1,0 +1,45 @@
+<html>
+  <head>
+    <link rel="stylesheet" type="text/css" href="assets/css/main.css">
+  </head>
+  <body bgcolor = "#FFE5DF">
+    <div align=right>
+    <a href='/login'>
+      <input type="button" value="Sign Out">
+    </a>
+  </div>
+
+    <center>
+      <h1> GUI </h1>
+    </center>
+
+
+    <center>
+
+      <a href='/insert'>
+        <input type="button" value="Insert Sighting">
+      </a>
+      <a href='/update'>
+        <input type="button" value="Update Flower">
+      </a>
+    </center>
+
+
+    <center>
+      <br>
+      <h1> Select flower for information </h1>
+      <table style="width:50%">
+      {% for item in items %}
+          <tr>
+              <td>
+                <center>
+                  <a href='/flowerinfo'>
+                    <input type="button" value="{{item[0]}}">
+                  </a>
+              </center>
+              </td>
+
+      {% endfor %}
+    </center>
+  </body>
+</html>
