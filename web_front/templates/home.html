@@ -4,10 +4,10 @@
   </head>
   <body bgcolor = "#FFE5DF">
     <div align=right>
-    <a href='/login'>
-      <input type="button" value="Sign Out">
-    </a>
-  </div>
+      <a href='/login'>
+        <input type="button" value="Sign Out">
+      </a>
+    </div>
 
     <center>
       <h1> GUI </h1>
@@ -33,9 +33,11 @@
           <tr>
               <td>
                 <center>
-                  <a href='/flowerinfo'>
-                    <input type="button" value="{{item[0]}}">
+                  <form action="" method="POST">
+                    <input type="text" value="{{item[0]}}" name="flowername" value="{{request.form.flowername}}">
+                    <input class="btn btn-default" type="submit" value="Info">
                   </a>
+                  </form>
               </center>
               </td>
 

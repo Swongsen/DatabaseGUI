@@ -1,0 +1,52 @@
+<html>
+  <head>
+    <link rel="stylesheet" type="text/css" href="assets/css/main.css">
+  </head>
+  <body>
+    <div align=right>
+      <a href='/home'>
+        <input type="button" value="Home">
+      </a>
+    </div>
+    <center>
+    {% if message %}
+      <p class="message"><strong>Message:</strong> {{ message }}
+    {% endif %}
+    </center>
+
+    <form action="" method="POST">
+        <div align=left>
+      <input type="text" placeholder="Person" name="person" value="{{
+        request.form.person }}">
+        <br>
+      <input type="text" placeholder="Flower Name" name="flowername" value="{{
+        request.form.flowername }}">
+        <br>
+      <input type="text" placeholder="Location" name="location" value="{{
+        request.form.location }}">
+        <br>
+      <input type="text" placeholder="Sighted" name="sighted" value="{{
+         request.form.sighted }}">
+        <br>
+        </div>
+        <div align=right>
+        <input type="text" placeholder="Updated Person" name="updatedperson" value="{{
+          request.form.updatedperson }}">
+          <br>
+        <input type="text" placeholder="Updated Flower Name" name="updatedflowername" value="{{
+          request.form.updatedflowername }}">
+          <br>
+        <input type="text" placeholder="Updated Location" name="updatedlocation" value="{{
+          request.form.updatedlocation }}">
+          <br>
+        <input type="text" placeholder="Updated Sighted" name="updatedsighted" value="{{
+           request.form.updatedsighted }}">
+          <br>
+          </div>
+      <input class="btn btn-default" type="submit" value="Update">
+    </form>
+
+
+
+  </body>
+</html>

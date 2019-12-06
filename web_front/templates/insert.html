@@ -1,0 +1,26 @@
+<html>
+  <head>
+    <link rel="stylesheet" type="text/css" href="assets/css/main.css">
+  </head>
+  <body>
+    <div align=right>
+      <a href='/home'>
+        <input type="button" value="Home">
+
+      </a>
+    </div>
+
+    <form action="" method="POST">
+      <input type="text" placeholder="Username" name="username" value="{{
+        request.form.username }}">
+        <br>
+       <input type="password" placeholder="Password" name="password" value="{{
+        request.form.password }}">
+        <br>
+      <input class="btn btn-default" type="submit" value="Login">
+    </form>
+
+
+
+  </body>
+</html>
