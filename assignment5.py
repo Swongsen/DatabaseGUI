@@ -6,13 +6,18 @@ from services import monitoring
 
 webclient = Flask(__name__, static_url_path='', static_folder='web_front/static', template_folder='web_front/templates')
 webclient.secret_key = "secretkey"
+
+# initializing global variables
 flower = "a"
 items = ""
+option = ""
 
+# Base route. Reroutes to login
 @webclient.route("/")
 def reroute():
     return redirect("/login")
 
+# Login page
 @webclient.route("/login", methods=["GET", "POST"])
 def login():
     message = None
@@ -33,6 +38,7 @@ def login():
     # If not already redirected to /home, then redirect back to login and print the error message
     return render_template("login.html", message=message)
 
+# Create an account page
 @webclient.route("/createuser", methods=["GET", "POST"])
 def createUser():
     message = None
@@ -42,9 +48,11 @@ def createUser():
 
     return render_template("createuser.html", message=message)
 
+# Home page
 @webclient.route("/home", methods=["GET", "POST"])
 def home():
     global flower
+    global value
     # If not logged in, redirect back to login page
     #if not session.get('logged_in'):
     #    return redirect("/login")
@@ -60,12 +68,30 @@ def home():
         return render_template("home.html", items=items)
 
     elif request.method == "POST":
-        print("hello")
-        title = request.form["flowername"]
-        flower = title
-        print("title: ", title)
+        # Title captures the flowername
+        flower = request.form["flowername"]
+        # Value is the option chose on the home screen
+        value = request.form["option"]
+
+
         print("flower:", flower)
-        return redirect("/flowerinfo")
+        print("option:", value)
+
+        # Reroutes to selected option
+        if value == "Insert Sighting":
+            return redirect("/insert")
+        elif value == "Info":
+            return redirect("/flowerinfo")
+        elif value == "Update Flower":
+            return redirect("/update")
+
+@webclient.route("/deletesighting", methods=["GET", "POST"])
+    global flower
+
+    if request.method == "GET":
+        return render_template("deletesighting")
+    elif request.method == "POST":
+        return render_template("deletesighting",flower=flower)
 
 @webclient.route("/flowerinfo", methods=["GET", "POST"])
 def display():
@@ -75,22 +101,33 @@ def display():
     if request.method == "GET":
         items = ""
         conn = sqlite3.connect('flowers2019.db')
-        cc = conn.execute('SELECT PERSON, LOCATION, SIGHTED FROM SIGHTINGS, FLOWERS WHERE (FLOWERS.COMNAME = \"'+flower+'\") ORDER BY SIGHTINGS.SIGHTED DESC LIMIT 10' )
+        cc = conn.execute('SELECT PERSON, LOCATION, SIGHTED FROM SIGHTINGS WHERE NAME IN (SELECT COMNAME FROM FLOWERS WHERE COMNAME = \"'+flower+'\") ORDER BY SIGHTINGS.SIGHTED DESC LIMIT 10' )
         items = cc.fetchall()
         print(flower)
         title = flower
 
-        return render_template("flowerinfo.html", items=items)
+        return render_template("flowerinfo.html", items=items, flower=flower)
 
 @webclient.route("/insert", methods=["GET", "POST"])
 def insert():
     global flower
+    message = None
+    conn = sqlite3.connect('flowers2019.db')
 
     if request.method == "GET":
         return render_template("insert.html")
 
     elif request.method == "POST":
-        return "HELLO"
+        message = "Sighting inserted"
+        person = request.form["person"]
+        flower = request.form["flower"]
+        location = request.form["location"]
+        sighting = request.form["sighted"]
+
+        cc = conn.execute('INSERT INTO SIGHTINGS (NAME, PERSON, LOCATION, SIGHTED) VALUES (\"'+flower+'\",\"'+person+'\",\"'+location+'\",\"'+sighting+'\")')
+        conn.commit()
+
+        return render_template("insert.html", message=message)
 
 @webclient.route("/update", methods=["GET", "POST"])
 def update():
@@ -113,9 +150,8 @@ def update():
         updatelocation = request.form["updatedlocation"]
         updatesighting = request.form["updatedsighted"]
 
-        cc = conn.execute('update sightings set name = \'' +updateflower +'\', person= \''+ updateperson+'\', location= \''+updatelocation+'\',sighted = \''+updatesighting
-                           +'\' WHERE (name = \''+originalflower+'\' and person= \''+originalperson+'\' and location= \''+originallocation+'\' and sighted = \''+originalsighting+'\');')
-
+        cc = conn.execute('UPDATE SIGHTINGS SET Person =\"'+updateperson+'\", Location =\"'+updatelocation+'\", Sighted =\"'+updatesighting+'\" WHERE Person =\"'+originalperson+'\" AND Location =\"'+originallocation+'\" AND Sighted =\"'+originalsighting+'\" AND name =\"'+originalflower+'\"')
+        conn.commit()
 
         print(originalperson, originalflower, originallocation, originalsighting)
         print(updateperson, updateflower, updatelocation, updatesighting)

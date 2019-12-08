@@ -3,12 +3,10 @@
     <link rel="stylesheet" type="text/css" href="assets/css/main.css">
   </head>
   <body>
-    <div align=right>
+    <center>
       <a href='/home'>
         <input type="button" value="Home">
       </a>
-    </div>
-    <center>
     {% if message %}
       <p class="message"><strong>Message:</strong> {{ message }}
     {% endif %}
@@ -29,6 +27,7 @@
          request.form.sighted }}">
         <br>
         </div>
+
         <div align=right>
         <input type="text" placeholder="Updated Person" name="updatedperson" value="{{
           request.form.updatedperson }}">
@@ -43,6 +42,7 @@
            request.form.updatedsighted }}">
           <br>
           </div>
+
       <input class="btn btn-default" type="submit" value="Update">
     </form>
 
