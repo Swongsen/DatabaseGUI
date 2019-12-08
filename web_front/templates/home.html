@@ -17,15 +17,16 @@
           <tr>
               <td>
                 <center>
+                  <h1> {{item[0]}} </h1>
                   <form action="" method="POST">
-                      <!-- <h1><{{item[0]}}</h1> -->
-                    <input type="text" name="flowername" value="{{item[0]}}">
-                    <input class="btn btn-default" type="submit" name = "option" value="Info">
+                    <input class="btn btn-default" type="submit" name = "option" value="Sightings">
 
                     <input class="btn btn-default" type="submit" name = "option" value="Insert Sighting">
 
                     <input class="btn btn-default" type="submit" name = "option" value="Update Flower">
 
+                    <input class="btn btn-default" type="submit" name = "option" value="Delete Sighting">
+                    <input type="hidden" name ="flowername" value="{{item[0]}}">
                   </form>
               </center>
               </td>

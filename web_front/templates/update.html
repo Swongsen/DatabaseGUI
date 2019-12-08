@@ -1,9 +1,30 @@
 <html>
   <head>
     <link rel="stylesheet" type="text/css" href="assets/css/main.css">
+    <style>
+    .row:after {
+   content: "";
+   display: table;
+   clear: both;
+  }
+    .column {
+   float:left;
+   width:10px;
+   overflow:hidden;
+  }
+
+  .left {
+   width:50%;
+  }
+
+  .right {
+   width:50%;
+  }
+  </style>
   </head>
   <body>
     <center>
+      <h1> Update {{flower}} Sighting </h1><br>
       <a href='/home'>
         <input type="button" value="Home">
       </a>
@@ -11,15 +32,16 @@
       <p class="message"><strong>Message:</strong> {{ message }}
     {% endif %}
     </center>
-
+    <center>
     <form action="" method="POST">
-        <div align=left>
+      <div class="row">
+        <div class= "column left">
       <input type="text" placeholder="Person" name="person" value="{{
         request.form.person }}">
         <br>
-      <input type="text" placeholder="Flower Name" name="flowername" value="{{
+      <!-- <input type="text" placeholder="Flower Name" name="flowername" value="{{
         request.form.flowername }}">
-        <br>
+        <br> -->
       <input type="text" placeholder="Location" name="location" value="{{
         request.form.location }}">
         <br>
@@ -28,13 +50,13 @@
         <br>
         </div>
 
-        <div align=right>
+        <div class = "column right">
         <input type="text" placeholder="Updated Person" name="updatedperson" value="{{
           request.form.updatedperson }}">
           <br>
-        <input type="text" placeholder="Updated Flower Name" name="updatedflowername" value="{{
+        <!-- <input type="text" placeholder="Updated Flower Name" name="updatedflowername" value="{{
           request.form.updatedflowername }}">
-          <br>
+          <br> -->
         <input type="text" placeholder="Updated Location" name="updatedlocation" value="{{
           request.form.updatedlocation }}">
           <br>
@@ -42,10 +64,11 @@
            request.form.updatedsighted }}">
           <br>
           </div>
+          </div>
 
-      <input class="btn btn-default" type="submit" value="Update">
+      <input class="btn btn-default" type="submit" value="Update Sighting">
     </form>
-
+</center>
 
 
   </body>

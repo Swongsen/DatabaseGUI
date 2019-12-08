@@ -54,10 +54,11 @@ def home():
     global flower
     global value
     # If not logged in, redirect back to login page
-    #if not session.get('logged_in'):
-    #    return redirect("/login")
-    #else:
-    if request.method == "GET":
+    if not session.get('logged_in'):
+        return redirect("/login")
+    else:
+     if request.method == "GET":
+        # Opens database and selects comname to return to items
         conn = sqlite3.connect('flowers2019.db')
         cc = conn.execute('SELECT comname FROM Flowers')
         items = cc.fetchall()
@@ -67,33 +68,49 @@ def home():
 
         return render_template("home.html", items=items)
 
-    elif request.method == "POST":
+     elif request.method == "POST":
         # Title captures the flowername
         flower = request.form["flowername"]
         # Value is the option chose on the home screen
         value = request.form["option"]
-
-
-        print("flower:", flower)
+        #print("flower:", flower)
         print("option:", value)
 
         # Reroutes to selected option
         if value == "Insert Sighting":
             return redirect("/insert")
-        elif value == "Info":
-            return redirect("/flowerinfo")
+        elif value == "Sightings":
+            return redirect("/flowersightings")
         elif value == "Update Flower":
             return redirect("/update")
+        elif value == "Delete Sighting":
+            return redirect("/deletesighting")
 
 @webclient.route("/deletesighting", methods=["GET", "POST"])
+def delete():
     global flower
+    message = None
+    # Connects to the database
+    conn = sqlite3.connect('flowers2019.db')
 
+    # When loading page
     if request.method == "GET":
-        return render_template("deletesighting")
-    elif request.method == "POST":
-        return render_template("deletesighting",flower=flower)
 
-@webclient.route("/flowerinfo", methods=["GET", "POST"])
+        return render_template("deletesighting.html",flower=flower)
+
+    # When sending info from page
+    elif request.method == "POST":
+        message = "Sighting deleted"
+        person = request.form["person"]
+        location = request.form["location"]
+        sighting = request.form["sighted"]
+
+        cc = conn.execute('DELETE FROM SIGHTINGS WHERE NAME = \"'+flower+'\" AND PERSON = \"'+person+'\" AND LOCATION = \"'+location+'\" AND SIGHTED = \"'+sighting+'\"')
+        conn.commit()
+
+        return render_template("deletesighting.html", message=message)
+
+@webclient.route("/flowersightings", methods=["GET", "POST"])
 def display():
     global flower
     global items
@@ -106,7 +123,7 @@ def display():
         print(flower)
         title = flower
 
-        return render_template("flowerinfo.html", items=items, flower=flower)
+        return render_template("flowersightings.html", items=items, flower=flower)
 
 @webclient.route("/insert", methods=["GET", "POST"])
 def insert():
@@ -115,12 +132,11 @@ def insert():
     conn = sqlite3.connect('flowers2019.db')
 
     if request.method == "GET":
-        return render_template("insert.html")
+        return render_template("insert.html", flower = flower)
 
     elif request.method == "POST":
         message = "Sighting inserted"
         person = request.form["person"]
-        flower = request.form["flower"]
         location = request.form["location"]
         sighting = request.form["sighted"]
 
@@ -136,25 +152,26 @@ def update():
     conn = sqlite3.connect('flowers2019.db')
 
     if request.method == "GET":
-        return render_template("update.html")
+        # Pass the flower name to the template
+        return render_template("update.html", flower=flower)
 
     elif request.method == "POST":
+
         message="Updated Successfully"
         originalperson = request.form["person"]
-        originalflower = request.form["flowername"]
         originallocation = request.form["location"]
         originalsighting = request.form["sighted"]
 
         updateperson = request.form["updatedperson"]
-        updateflower = request.form["updatedflowername"]
         updatelocation = request.form["updatedlocation"]
         updatesighting = request.form["updatedsighted"]
 
-        cc = conn.execute('UPDATE SIGHTINGS SET Person =\"'+updateperson+'\", Location =\"'+updatelocation+'\", Sighted =\"'+updatesighting+'\" WHERE Person =\"'+originalperson+'\" AND Location =\"'+originallocation+'\" AND Sighted =\"'+originalsighting+'\" AND name =\"'+originalflower+'\"')
+        cc = conn.execute('UPDATE SIGHTINGS SET Person =\"'+updateperson+'\", Location =\"'+updatelocation+'\", Sighted =\"'+updatesighting+'\" WHERE Person =\"'+originalperson+'\" AND Location =\"'+originallocation+'\" AND Sighted =\"'+originalsighting+'\" AND name =\"'+flower+'\"')
         conn.commit()
 
-        print(originalperson, originalflower, originallocation, originalsighting)
-        print(updateperson, updateflower, updatelocation, updatesighting)
+        print("flower:", flower)
+        print(originalperson, originallocation, originalsighting)
+        print(updateperson, updatelocation, updatesighting)
         return render_template("update.html", message=message)
 
 

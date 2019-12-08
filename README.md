@@ -20,3 +20,5 @@ SELECT * FROM SIGHTINGS ORDER BY SIGHTED DESC
 
 
 cc = conn.execute('UPDATE SIGHTINGS SET PERSON= \"'+updateperson+'\", LOCATION =\"'+updatelocation+'\", SIGHTED =\"'+updatesighting+'\" WHERE             ')
+
+DELETE FROM SIGHTINGS WHERE NAME = "Alpine columbine" and person = "Bobby" and location = "Orlando" and Sighted = "9999-99-99"

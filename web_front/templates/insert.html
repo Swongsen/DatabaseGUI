@@ -3,24 +3,26 @@
     <link rel="stylesheet" type="text/css" href="assets/css/main.css">
   </head>
   <body>
-    <div align=right>
+    <center>
+      <h1> Insert {{flower}} Sighting </h1><br>
       <a href='/home'>
         <input type="button" value="Home">
-
       </a>
-    </div>
+    </center>
+    <br>
     <center>
     {% if message %}
       <p class="message"><strong>Message:</strong> {{ message }}
     {% endif %}
     </center>
+    <center>
     <form action="" method="POST">
       <input type="text" placeholder="Person" name="person" value="{{
         request.form.person }}">
         <br>
-       <input type="text" placeholder="Flower" name="flower" value="{{
+       <!-- <input type="text" placeholder="Flower" name="flower" value="{{
         request.form.flower }}">
-        <br>
+        <br> -->
        <input type="text" placeholder="Location" name="location" value="{{
         request.form.location }}">
         <br>
@@ -29,7 +31,7 @@
         <br>
       <input class="btn btn-default" type="submit" value="Insert sighting">
     </form>
-
+  </center>
 
 
   </body>
