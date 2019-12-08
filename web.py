@@ -90,89 +90,101 @@ def home():
 def delete():
     global flower
     message = None
-    # Connects to the database
-    conn = sqlite3.connect('flowers2019.db')
+    if not session.get('logged_in'):
+        return redirect("/login")
+    else:
+        # Connects to the database
+        conn = sqlite3.connect('flowers2019.db')
 
-    # When loading page
-    if request.method == "GET":
+        # When loading page
+        if request.method == "GET":
 
-        return render_template("deletesighting.html",flower=flower)
+            return render_template("deletesighting.html",flower=flower)
 
-    # When sending info from page
-    elif request.method == "POST":
-        message = "Sighting deleted"
-        person = request.form["person"]
-        location = request.form["location"]
-        sighting = request.form["sighted"]
+        # When sending info from page
+        elif request.method == "POST":
+            message = "Sighting deleted"
+            person = request.form["person"]
+            location = request.form["location"]
+            sighting = request.form["sighted"]
 
-        cc = conn.execute('DELETE FROM SIGHTINGS WHERE NAME = \"'+flower+'\" AND PERSON = \"'+person+'\" AND LOCATION = \"'+location+'\" AND SIGHTED = \"'+sighting+'\"')
-        conn.commit()
+            cc = conn.execute('DELETE FROM SIGHTINGS WHERE NAME = \"'+flower+'\" AND PERSON = \"'+person+'\" AND LOCATION = \"'+location+'\" AND SIGHTED = \"'+sighting+'\"')
+            conn.commit()
 
-        return render_template("deletesighting.html", message=message)
+            return render_template("deletesighting.html", message=message)
 
 @webclient.route("/flowersightings", methods=["GET", "POST"])
 def display():
     global flower
     global items
 
-    if request.method == "GET":
-        items = ""
-        conn = sqlite3.connect('flowers2019.db')
-        cc = conn.execute('SELECT PERSON, LOCATION, SIGHTED FROM SIGHTINGS WHERE NAME IN (SELECT COMNAME FROM FLOWERS WHERE COMNAME = \"'+flower+'\") ORDER BY SIGHTINGS.SIGHTED DESC LIMIT 10' )
-        items = cc.fetchall()
-        print(flower)
-        title = flower
+    if not session.get('logged_in'):
+        return redirect("/login")
+    else:
+        if request.method == "GET":
+            items = ""
+            conn = sqlite3.connect('flowers2019.db')
+            cc = conn.execute('SELECT PERSON, LOCATION, SIGHTED FROM SIGHTINGS WHERE NAME IN (SELECT COMNAME FROM FLOWERS WHERE COMNAME = \"'+flower+'\") ORDER BY SIGHTINGS.SIGHTED DESC LIMIT 10' )
+            items = cc.fetchall()
+            print(flower)
+            title = flower
 
-        return render_template("flowersightings.html", items=items, flower=flower)
+            return render_template("flowersightings.html", items=items, flower=flower)
 
 @webclient.route("/insert", methods=["GET", "POST"])
 def insert():
     global flower
-    message = None
-    conn = sqlite3.connect('flowers2019.db')
+    if not session.get('logged_in'):
+        return redirect("/login")
+    else:
+        message = None
+        conn = sqlite3.connect('flowers2019.db')
 
-    if request.method == "GET":
-        return render_template("insert.html", flower = flower)
+        if request.method == "GET":
+            return render_template("insert.html", flower = flower)
 
-    elif request.method == "POST":
-        message = "Sighting inserted"
-        person = request.form["person"]
-        location = request.form["location"]
-        sighting = request.form["sighted"]
+        elif request.method == "POST":
+            message = "Sighting inserted"
+            person = request.form["person"]
+            location = request.form["location"]
+            sighting = request.form["sighted"]
 
-        cc = conn.execute('INSERT INTO SIGHTINGS (NAME, PERSON, LOCATION, SIGHTED) VALUES (\"'+flower+'\",\"'+person+'\",\"'+location+'\",\"'+sighting+'\")')
-        conn.commit()
+            cc = conn.execute('INSERT INTO SIGHTINGS (NAME, PERSON, LOCATION, SIGHTED) VALUES (\"'+flower+'\",\"'+person+'\",\"'+location+'\",\"'+sighting+'\")')
+            conn.commit()
 
-        return render_template("insert.html", message=message)
+            return render_template("insert.html", message=message)
 
 @webclient.route("/update", methods=["GET", "POST"])
 def update():
     global flower
-    message = None
-    conn = sqlite3.connect('flowers2019.db')
+    if not session.get('logged_in'):
+        return redirect("/login")
+    else:
+        message = None
+        conn = sqlite3.connect('flowers2019.db')
 
-    if request.method == "GET":
-        # Pass the flower name to the template
-        return render_template("update.html", flower=flower)
+        if request.method == "GET":
+            # Pass the flower name to the template
+            return render_template("update.html", flower=flower)
 
-    elif request.method == "POST":
+        elif request.method == "POST":
 
-        message="Updated Successfully"
-        originalperson = request.form["person"]
-        originallocation = request.form["location"]
-        originalsighting = request.form["sighted"]
+            message="Updated Successfully"
+            originalperson = request.form["person"]
+            originallocation = request.form["location"]
+            originalsighting = request.form["sighted"]
 
-        updateperson = request.form["updatedperson"]
-        updatelocation = request.form["updatedlocation"]
-        updatesighting = request.form["updatedsighted"]
+            updateperson = request.form["updatedperson"]
+            updatelocation = request.form["updatedlocation"]
+            updatesighting = request.form["updatedsighted"]
 
-        cc = conn.execute('UPDATE SIGHTINGS SET Person =\"'+updateperson+'\", Location =\"'+updatelocation+'\", Sighted =\"'+updatesighting+'\" WHERE Person =\"'+originalperson+'\" AND Location =\"'+originallocation+'\" AND Sighted =\"'+originalsighting+'\" AND name =\"'+flower+'\"')
-        conn.commit()
+            cc = conn.execute('UPDATE SIGHTINGS SET Person =\"'+updateperson+'\", Location =\"'+updatelocation+'\", Sighted =\"'+updatesighting+'\" WHERE Person =\"'+originalperson+'\" AND Location =\"'+originallocation+'\" AND Sighted =\"'+originalsighting+'\" AND name =\"'+flower+'\"')
+            conn.commit()
 
-        print("flower:", flower)
-        print(originalperson, originallocation, originalsighting)
-        print(updateperson, updatelocation, updatesighting)
-        return render_template("update.html", message=message)
+            print("flower:", flower)
+            print(originalperson, originallocation, originalsighting)
+            print(updateperson, updatelocation, updatesighting)
+            return render_template("update.html", message=message)
 
 
 
